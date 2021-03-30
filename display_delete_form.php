@@ -4,7 +4,9 @@
     if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     }
-    
+?>
+
+<?PHP
     # 1. connect to database
     require '../database/database_new.php';
     $pdo = Database::connect();
@@ -25,12 +27,15 @@
        $pdo->query($sql); # execute the query
        
        # redirect back to the displayed list to show the updated changes
-       header("location: display_list.php");
+       # using th header here will not work because the header has already been sent. Therefore a
+       # work around here is to use javascript to do the redirecting and avoid errors
+       # header("location: display_list.php");
+       echo "<script>";
+       echo "window.location ='display_list.php'";
+       echo "</script>";
    }
     
-?>
-
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -91,3 +96,4 @@ error_reporting(0);
 </div>
 </body>
 </html>
+

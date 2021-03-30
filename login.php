@@ -1,8 +1,4 @@
-
 <?php
-    // ini_set("display_errors", 1);
-    // error_reporting(E_ALL);
-    // error reporting(0);
     session_start();
     
         $errMsg=''; // initialize message to display on HTML form
@@ -30,10 +26,12 @@
                 
                 # if user typed legit username, verify SALTED password
                 if ($result) {
+                    $password_hash_db="";
+                    $password_salt_db="";
                     
                     $password_hash_db = $result['password_hash'];
                     $password_salt_db = $result['password_salt'];
-                    $password_hash    = MD5($password + $password_salt_db);
+                    $password_hash    = MD5($password . $password_salt_db);
                     
                     // if password id correct, redirect
                     if(!strcmp($password_hash, $password_hash_db)) {
@@ -50,13 +48,10 @@
             else
                 $errMsg='Login failure: wrong username or password';
             }
-        
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Assignment 16</title>
@@ -95,10 +90,11 @@ error_reporting(0);
 ?>
         <h2 class="text-center">Log in</h2>
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Email" required="required" name="email">
+             <span style='color: red;'><?php echo $errMsg; ?></span>
+            <input type="text" class="form-control" placeholder="Email" name="email">
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" required="required" name="password">
+            <input type="password" class="form-control" placeholder="Password" name="password">
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">Log in</button>
@@ -106,8 +102,11 @@ error_reporting(0);
         <div>
             <p class="text-center"><a href="register.php">Register</a></p>
         </div>
+        <div>
+            <p class="text-center"><a href="https://github.com/cmkrygier/CIS355">Github</a></p>
+        </div>
     </form>
-   
 </div>
 </body>
 </html>
+

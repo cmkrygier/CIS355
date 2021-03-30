@@ -1,12 +1,15 @@
+
 <?php
-    
     # connect
     session_start();
     #print_r($_SESSION);
     if (!isset($_SESSION['email'])) {
     header("Location: login.php");
     }
-   
+?>
+
+<?php
+    
 require '../database/database_new.php';
 #include_once 'get_permissions.php';
     $pdo = Database::connect();
@@ -18,14 +21,10 @@ require '../database/database_new.php';
     $query->execute();
     $result = $query->fetch();
      
-        
     $sql2 = "SELECT * FROM persons WHERE email=?";
     $query2=$pdo->prepare($sql2);
     $query2->execute(Array($_SESSION['email']));
     $result2 = $query2->fetch();
-
-  #  echo $result2['role'];
-        
 ?>
 
 <!DOCTYPE html>
@@ -76,50 +75,52 @@ error_reporting(0);
         <div class="form-group">
             <label for="first_name">First Name</label>
             <span style='color: red;'><?php echo $_GET["fnameError"]; ?></span>
-            <input type="text" class="form-control" placeholder="Jonny"  name="first_name" value='<?php echo $result['fname']; ?>'>
+            <input type="text" class="form-control" placeholder="Jonny"  name="first_name" value='<?php if($result['fname']) echo $result['fname']; else echo $_GET['first_name'];?>'>
         </div>
 
         <div class="form-group">
             <label for="last_name">Last Name</label>
             <span style='color: red;'><?php echo $_GET["lnameError"]; ?></span>
-            <input type="text" class="form-control" placeholder="Appleseed"  name="last_name" value='<?php echo $result['lname']; ?>'>
+            <input type="text" class="form-control" placeholder="Appleseed"  name="last_name" value='<?php if($result['lname']) echo $result['lname']; else echo $_GET['last_name'];?>'>
+            
         </div>
 
         <div class="form-group">
             <label for="email">Email</label>
             <span style='color: red;'><?php echo $_GET["emailError"]; ?></span>
-            <input type="text" class="form-control" placeholder="example@svsu.edu"  name="email" value='<?php echo $result['email']; ?>'>
+            <input type="text" class="form-control" placeholder="example@svsu.edu"  name="email" value='<?php if($result['email']) echo $result['email']; else echo $_GET['email'];?>'>
+            
         </div>
         
         <div class="form-group">
             <label for="phone">Phone Number</label>
             <span style='color: red;'><?php echo $_GET["phoneError"]; ?></span>
-            <input type="text" class="form-control" placeholder="(989)788-8887"  name="phone" value = '<?php echo $result['phone']; ?>'>
+            <input type="text" class="form-control" placeholder="(989)788-8887"  name="phone" value ='<?php if($result['phone']) echo $result['phone']; else echo $_GET['phone'];?>'>
         </div>
             
         <div class="form-group">
             <label for="address_one">Street Address 1</label>
             <span style='color: red;'><?php echo $_GET["addressOneError"]; ?></span>
-            <input type="text" class="form-control" placeholder="123 Drury Lane"  name="address_one" value='<?php echo $result['address']; ?>'>
+            <input type="text" class="form-control" placeholder="123 Drury Lane"  name="address_one" value='<?php if($result['address']) echo $result['address']; else echo $_GET['address_one'];?>'>
         </div>
 
         <div class="form-group">
             <label for="addressTwoError">Street Address 2</label>
             <span style='color: red;'><?php echo $_GET["addressTwoError"]; ?></span>
-            <input type="text" class="form-control" placeholder="123 Drury Lane" name="address_two" value= '<?php echo $result['address2']; ?>'>
+            <input type="text" class="form-control" placeholder="123 Drury Lane" name="address_two" value= '<?php if($result['address2']) echo $result['address2']; else echo $_GET['address_two'];?>'>
         </div>
 
         <div class="form-group">
             <label for="city">City</label>
             <span style='color: red;'><?php echo $_GET["cityError"]; ?></span>
-            <input type="text" class="form-control" placeholder="University Center"name="city" value ='<?php echo $result['city']; ?>'>
+            <input type="text" class="form-control" placeholder="University Center"name="city" value ='<?php if($result['city']) echo $result['city']; else echo $_GET['city'];?>'>
         </div>
 
         <label for="State">State</label>
         <div class="form-group">
             
             <select name ="state" >
-                <option value=<?php echo $result['state']; ?> selected="selected"><?php echo $result['state']; ?></option>
+                <option value=<?php if($result['state']) echo $result['state']; else echo $_GET['state'];?> selected="selected"><?php if($result['state']) echo $result['state']; else echo $_GET['state'];?></option>
                 <option value="Alabama">Alabama</option>
                 <option value="Alaska">Alaska</option>
                 <option value="Arizona">Arizona</option>
@@ -176,7 +177,8 @@ error_reporting(0);
 
         <div class="form-group">
             <label for="zip">Zip Code</label>
-            <input type="text" class="form-control" placeholder="48706" required="required" name="zip" value='<?php echo $result['zip_code']; ?>'>
+            <span style='color: red;'><?php echo $_GET["zipError"]; ?></span>
+            <input type="text" class="form-control" placeholder="48706" name="zip" value='<?php if($result['zip_code']) echo $result['zip_code']; else echo $_GET['zip'];?>'>
         </div>
         
         <?PHP

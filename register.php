@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="en">
     <head>
     <meta charset="utf-8">
@@ -34,10 +34,10 @@
     </style>
     </head>
     <body>
-
+       
     <div class="register-form">
-        <form action="register_processing.php" method="post">
-
+        <form action="register_processing.php" method="POST">
+            
         <?php
         error_reporting(0);
         ?>
@@ -46,25 +46,25 @@
             <div class="form-group">
                 <label for="first_name">First Name</label>
                 <span style='color: red;'><?php echo $_GET["fnameError"]; ?></span>
-                <input type="text" class="form-control" placeholder="Johnny" name="first_name" value='<?php echo $_GET["first_name"]; ?>'>
+                <input type="text" class="form-control" placeholder="Johnny" name="first_name" value='<?php echo $_POST["first_name"]; ?>'>
             </div>
 
             <div class="form-group">
                 <label for="last_name">Last Name</label>
                 <span style='color: red;'><?php echo $_GET["lnameError"]; ?></span>
-                <input type="text" class="form-control" placeholder="Appleseed" name="last_name" value='<?php echo $_GET["last_name"]; ?>'>
+                <input type="text" class="form-control" placeholder="Appleseed" name="last_name" value='<?php echo $_POST["last_name"]; ?>'>
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
                 <span style='color: red;'><?php echo $_GET["emailError"]; ?></span>
-                <input type="text" class="form-control" placeholder="example@svsu.edu"  name="email" value='<?php echo $_GET["email"]; ?>'>
+                <input type="text" class="form-control" placeholder="example@svsu.edu"  name="email" value='<?php echo $_POST["email"]; ?>'>
             </div>
             
             <div class="form-group">
                 <label for="phone">Phone Number</label>
                 <span style='color: red;'><?php echo $_GET["phoneError"]; ?></span>
-                <input type="text" class="form-control" placeholder="(989)788-8887" name="phone" value='<?php echo $_GET["phone"]; ?>'>
+                <input type="text" class="form-control" placeholder="(989)788-8887" name="phone" value='<?php echo $_POST["phone"]; ?>'>
             </div>
 
             <div class="form-group">
@@ -81,25 +81,25 @@
             <div class="form-group">
                 <label for="address_one">Street Address 1</label>
                 <span style='color: red;'><?php echo $_GET["addressOneError"]; ?></span>
-                <input type="text" class="form-control" placeholder="123 Drury Lane" name="address_one" value='<?php echo $_GET["address_one"]; ?>'>
+                <input type="text" class="form-control" placeholder="123 Drury Lane" name="address_one" value='<?php echo $_POST["address_one"]; ?>'>
             </div>
 
             <div class="form-group">
                 <label for="address_two">Street Address 2</label>
-                <input type="text" class="form-control" placeholder="123 Drury Lane"  name="address_two" value='<?php echo $_GET["address_two"]; ?>'>
+                <input type="text" class="form-control" placeholder="123 Drury Lane"  name="address_two" value='<?php echo $_POST["address_two"]; ?>'>
             </div>
 
             <div class="form-group">
                 <label for="city">City</label>
-            <span style='color: red;'><?php echo $_GET["cityError"]; ?></span>
-                <input type="text" class="form-control" placeholder="University Center"  name="city" value='<?php echo $_GET["city"]; ?>'>
+            <span style='color: red;'><?php echo $_POST["cityError"]; ?></span>
+                <input type="text" class="form-control" placeholder="University Center"  name="city" value='<?php echo $_POST["city"]; ?>'>
             </div>
 
             <label for="state">State</label>
             <div class="form-group">
                 
                 <select name ="state" >
-                    <option value="<?php echo $_GET["state"]; ?>" selected="selected"><?php echo $_GET["state"]; ?></option>
+                    <option value="<?php echo $_POST["state"]; ?>" selected="selected"><?php echo $_POST["state"]; ?></option>
                     <option value="Alabama">Alabama</option>
                     <option value="Alaska">Alaska</option>
                     <option value="Arizona">Arizona</option>
@@ -157,7 +157,7 @@
             <div class="form-group">
                 <span style='color: red;'><?php echo $_GET["zipError"]; ?></span>
                 <label for="zip">Zip Code</label>
-                <input type="text" class="form-control" placeholder="48706" name="zip" value='<?php echo $_GET["zip"]; ?>' >
+                <input type="text" class="form-control" placeholder="48706" name="zip" value='<?php echo $_POST["zip"]; ?>' >
             
             </div>
 
@@ -168,7 +168,3 @@
     </div>
 </body>
 </html>
-
-<?php
-   
-?>

@@ -13,10 +13,8 @@
         require '../database/database_new.php';
         $pdo = Database::connect();
 
-        # 2. assign user info to a variable
-        #$m = $_POST['msg'];
-                
         $count=0;
+        
         # Clean the posted information before updating the DB
         $firstName=htmlspecialchars($_POST['first_name']);
         $lastName =htmlspecialchars($_POST['last_name']);
@@ -28,7 +26,10 @@
         $state =htmlspecialchars($_POST['state']);
         $zip =htmlspecialchars($_POST['zip']);
         $role =htmlspecialchars($_POST['role']);
-        
+       
+        #validate 10 digit phone number:
+        $validPhone = preg_match('/^[0-9]{10}+$/', $phone);
+    
         # define errors because the user should not be able to update with invalid data.
         $fnameError="";
         $lnameError="";
@@ -45,21 +46,24 @@
         # check if the user is trying to upgrade their self. They could edit the html textfield and click on update
         # we will let them make the change, but wont let it go to the database.
         $sql3 = "SELECT * FROM persons "
-        . " WHERE id=? "
+        . " WHERE email=? "
         . " LIMIT 1"
         ;
         
         $query3=$pdo->prepare($sql3);
-        $query3->execute(Array($id));
+        $query3->execute(Array($_SESSION['email']));
         $result3 = $query3->fetch();
         
-        #if the roles do not match it means the user tried to change them we could log this is an attempt to
-        #elevate role or just ignore it.
-        
-        if(strcmp($result3['role'],$role)){
+        # if the user is logged in and viewing their own record, then check if the roles match or not. it means the user tried to change the role them we could log this is an attempt to
+        # elevate role or just ignore it.
+        if(!strcmp($result3['email'],$_SESSION['email'])){
+            
+            if(strcmp($result3['role'],$role)){
             # assign the role to be equal to the stored DB value
             $role=$result3['role'];
+            }
         }
+        
         
         
         # checking all of the item to see if they should throw an error now since they could edit the data
@@ -99,12 +103,13 @@
             #echo($item);
             if($item==$required_str){
                 $count=$count + 1;
-                echo("$item");
-                echo($count);
+               # echo("$item");
+              #  echo($count);
             }
         }
         
-        # check if the email is already taken
+        
+        # check if the email is empty
         if (empty($_POST["email"])){
             $emailError=$required_str;
             $count=$count + 1;
@@ -118,9 +123,16 @@
             $query2->execute(Array($email));
             $result2 = $query2->fetch();
             
-            if(!$result2['id']==$_GET['id']){
-                $emailError=$emailExistsError;
-                $count=$count + 1;
+            if($result2['id']==$id){
+               # this is the user's current address and we should accept it
+               # echo $result2['id'];
+               # echo $id;
+            
+            }else{
+                if($result2){
+                    $emailError=$emailExistsError;
+                    $count=$count + 1;
+                }
             }
         }
         
@@ -130,6 +142,12 @@
              $count=$count + 1;
          }
         
+    # check if the phone is in the correct 10 digit format
+     if (!$validPhone) {
+         $phoneError="PLease type in valid 10 digit phone number";
+         $count=$count + 1;
+     }
+     
        # $id=$_GET['id'];
         
         if($count!=0) {
@@ -156,11 +174,10 @@
         } else {
             
            # $id = $_GET['id'];
-
             # 3. assign MySQL query code to a variable
             #$sql = "UPDATE messages SET message= :m WHERE id= :id";
                 $sql="Update persons SET role=:role,fname=:firstName,lname=:lastName,email=:email,phone=:phone,address=:address,address2=:address2,city=:city,state=:state,zip_code=:zip WHERE id=:id";
-                
+                echo $role;
                 # prepared statement
                 $prepared_statement = $pdo->prepare($sql);
                 $prepared_statement->bindParam( ':role', $role);
@@ -180,11 +197,12 @@
 
             # 4. update the message in the database
             #$pdo->query($sql); # execute the query
-            header("Location: display_list.php?");
+            #header("Location: display_list.php?");
+            echo "<script> alert('User information updated');</script>";
+            echo "<script>window.location = 'display_list.php';</script>";
            # echo "<p>Your info has been added</p><br>";
            # echo "<a href='display_list.php'>Back to list</a>";
 
         }
     }
-    
-?>
+

@@ -4,7 +4,6 @@
     
     $count=0;
     #all new registered will be users. THey need a role and it would not be logical to assign them admin
-    $role="User";
     
     $firstName =htmlspecialchars($_POST['first_name']);
     $lastName =htmlspecialchars($_POST['last_name']);
@@ -17,6 +16,7 @@
     $city=htmlspecialchars($_POST['city']);
     $state=htmlspecialchars($_POST['state']);
     $zip=htmlspecialchars($_POST['zip']);
+    $role=htmlspecialchars($_POST['role']);
     
     #validate pw strength:
     $uppercase = preg_match('@[A-Z]@', $password);
@@ -24,8 +24,9 @@
     $number    = preg_match('@[0-9]@', $password);
     $specialChars = preg_match('@[^\w]@', $password);
     
-        #validate 10 digit phone number:
+    #validate 10 digit phone number:
     $validPhone = preg_match('/^[0-9]{10}+$/', $phone);
+    
     
     # define error variables
     $fnameError="";
@@ -132,7 +133,7 @@
          $count=$count + 1;
      }
      
-          # check if the phone is in the correct 10 digit format
+     # check if the phone is in the correct 10 digit format
      if (!$validPhone) {
          $phoneError="PLease type in valid 10 digit phone number";
          $count=$count + 1;
@@ -140,7 +141,7 @@
     
     # Sending data back to the form if incorrect and providing errors to the user here
     if($count!=0){
-       header("Location: register.php?"
+       header("Location: display_create_form.php?"
                . "first_name=$firstName" . "&"
                . "last_name=$lastName" . "&"
                . "email=$email" . "&"
@@ -191,7 +192,8 @@
     
             # inform user their information was added and redirect to the login screen using Javascript
            # header("Location: login.php?");
-           echo "<script> alert('User information added, going back to login page');</script>";
-           echo "<script>window.location = 'login.php';</script>";
+           echo "<script> alert('New User Added');</script>";
+           echo "<script>window.location = 'display_list.php';</script>";
         
     }
+

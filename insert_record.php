@@ -20,3 +20,4 @@ $sql = "INSERT INTO messages (message) VALUES ('$m')";
 $pdo->query($sql); # execute the query
 echo "<p>Your info has been added</p><br>";
 echo "<a href='display_list.php'>Back to list</a>";
+
